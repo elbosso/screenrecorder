@@ -18,6 +18,19 @@
 This project offers a screencast recorder that outputs avi files and a screenshot tool that saves
 png files. It opens a red frame that can be freely placed anywhere on the Desktop and resized and defines the area that
 is going to reccorded.
+
+It started out as a training exercise to get familiar with the Java Media Framework and while I was at it I wanted to find out if
+one could make the central feature of any such software with java: the ui for choosing a viewport on the desktop. I know there are 
+many more solutions (maybe better ones too) for doing this - I for example use avconv:
+
+```
+avconv -f x11grab -show_region 1 -follow_mouse 100 -r 10\\
+-s 960x540 -i :0.0+10,200 -acodec pcm_s16le\\
+-qscale 0  -vcodec libx264 /tmp/aviator_scale.mp4
+```
+
+But as I said - it offered the opportunity to learn something and i seldom say no when it happens...
+
 You can build it by issuing
 
 ```
