@@ -49,7 +49,7 @@ import javax.media.protocol.PullBufferStream;
  */
 class RobotImageDataSource extends PullBufferDataSource
 {
-	private final static org.apache.log4j.Logger CLASS_LOGGER = org.apache.log4j.Logger.getLogger(RobotImageDataSource.class);
+	private final static org.slf4j.Logger CLASS_LOGGER = org.slf4j.LoggerFactory.getLogger(RobotImageDataSource.class);
 
 	private final AviCreator aviCreator;
 	private RobotImageSourceStream[] streams;

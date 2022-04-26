@@ -52,7 +52,7 @@ import java.io.IOException;
  */
 class RobotImageSourceStream implements PullBufferStream
 {
-	private final static org.apache.log4j.Logger CLASS_LOGGER = org.apache.log4j.Logger.getLogger(RobotImageSourceStream.class);
+	private final static org.slf4j.Logger CLASS_LOGGER = org.slf4j.LoggerFactory.getLogger(RobotImageSourceStream.class);
 
 
 	private final AviCreator aviCreator;
@@ -126,7 +126,7 @@ class RobotImageSourceStream implements PullBufferStream
 		if (nextImage >= 55)
 		{
 // We are done. Set EndOfMedia.
-			if (CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))
+			if (CLASS_LOGGER.isErrorEnabled())
 				CLASS_LOGGER.error("Done reading all images.");
 			buf.setEOM(true);
 			buf.setOffset(0);

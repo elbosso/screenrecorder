@@ -71,7 +71,7 @@ interest&P=R34660
 public class AviCreator implements ControllerListener,
 		DataSinkListener
 {
-	private final static org.apache.log4j.Logger CLASS_LOGGER = org.apache.log4j.Logger.getLogger(AviCreator.class);
+	private final static org.slf4j.Logger CLASS_LOGGER = org.slf4j.LoggerFactory.getLogger(AviCreator.class);
 
 	boolean internalConstantFrameRate;
 	long timestampOfFirstFrame=-1l;
@@ -98,12 +98,12 @@ public class AviCreator implements ControllerListener,
 		Processor p;
 		try
 		{
-			if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("- create processor for the image datasource ...");
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("- create processor for the image datasource ...");
 			p = javax.media.Manager.createProcessor(ids);
 		}
 		catch (Exception e)
 		{
-			if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("Yikes! Cannot create a processor from the datasource.");
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Yikes! Cannot create a processor from the datasource.");
 			return false;
 		}
 		p.addControllerListener(this);
@@ -111,7 +111,7 @@ public class AviCreator implements ControllerListener,
 		p.configure();
 		if (!waitForState(p, Processor.Configured))
 		{
-			if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("Failed to configure the processor.");
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Failed to configure the processor.");
 			return false;
 		}
 // Set the output content descriptor to QuickTime.
@@ -124,7 +124,7 @@ public class AviCreator implements ControllerListener,
 		Format f[] = tcs[0].getSupportedFormats();
 		if (f == null || f.length <= 0)
 		{
-			if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("The mux does not support the input format: "
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("The mux does not support the input format: "
 					+ tcs[0].getFormat());
 			return false;
 		}
@@ -132,7 +132,7 @@ public class AviCreator implements ControllerListener,
 		{
 			for (int i=0;i<f.length;++i)
 			{
-				if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("available track format ["+i+"]: " + f[i]+" "+f[i].getEncoding());
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("available track format ["+i+"]: " + f[i]+" "+f[i].getEncoding());
 			}
 		}
 		//out: 4,5
@@ -148,24 +148,24 @@ public class AviCreator implements ControllerListener,
 		//11:47MB
 		//12:17MB
 		tcs[0].setFormat(f[1]);
-		if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("Setting the track format to: " + f[1]);
+		if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Setting the track format to: " + f[1]);
 // We are done with programming the processor. Let's just realize it.
 		p.realize();
 		if (!waitForState(p, Processor.Realized))
 		{
-			if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("Failed to realize the processor.");
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Failed to realize the processor.");
 			return false;
 		}
 // Now, we'll need to create a DataSink.
 		DataSink dsink;
 		if ((dsink = createDataSink(p, outML)) == null)
 		{
-			if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("Failed to create a DataSink for the given outputMediaLocator: " + outML);
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Failed to create a DataSink for the given outputMediaLocator: " + outML);
 			return false;
 		}
 		dsink.addDataSinkListener(this);
 		fileDone = false;
-		if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("start processing...");
+		if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("start processing...");
 // OK, we can now start the actual transcoding.
 		new Thread()
 		{
@@ -186,11 +186,11 @@ public class AviCreator implements ControllerListener,
 					{
 					}
 					p.removeControllerListener(AviCreator.this);
-					if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("...done processing.");
+					if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("...done processing.");
 				}
 				catch (IOException e)
 				{
-					if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("IO error during processing");
+					if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("IO error during processing");
 					e.printStackTrace();
 				}
 			}
@@ -205,19 +205,19 @@ public class AviCreator implements ControllerListener,
 		DataSource ds;
 		if ((ds = p.getDataOutput()) == null)
 		{
-			if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("Something is really wrong: the processor does nothave an output DataSource");
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Something is really wrong: the processor does nothave an output DataSource");
 			return null;
 		}
 		DataSink dsink;
 		try
 		{
-			if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("- create DataSink for: " + outML);
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("- create DataSink for: " + outML);
 			dsink = javax.media.Manager.createDataSink(ds, outML);
 			dsink.open();
 		}
 		catch (Exception e)
 		{
-			if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("Cannot create the DataSink: " + e);
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Cannot create the DataSink: " + e);
 			return null;
 		}
 		return dsink;
@@ -347,7 +347,7 @@ height = 256;//800;//573;
 		MediaLocator oml;
 		if ((oml = createMediaLocator(outputURL)) == null)
 		{
-			if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("Cannot build media locator from: " + outputURL);
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Cannot build media locator from: " + outputURL);
 			System.exit(1);
 		}
 		RandomColor randomColor=new RandomColor();
@@ -423,7 +423,7 @@ height = 256;//800;//573;
 	}
 	/*
 	static void prUsage() {
-	if(CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))CLASS_LOGGER.error("Usage: java JpegImagesToMovie -w <width> -h
+	if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Usage: java JpegImagesToMovie -w <width> -h
 	<height> -f <frame rate> -o <output URL> <input JPEG file 1> <input
 	JPEG file 2> ...");
 	System.exit( -1);

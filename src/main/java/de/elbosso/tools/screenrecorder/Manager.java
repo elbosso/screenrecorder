@@ -51,7 +51,7 @@ import java.io.IOException;
 
 public class Manager extends de.elbosso.util.beans.EventHandlingSupport implements de.netsysit.util.pattern.command.FileProcessor
 {
-	private final static org.apache.log4j.Logger CLASS_LOGGER = org.apache.log4j.Logger.getLogger(Manager.class);
+	private final static org.slf4j.Logger CLASS_LOGGER = org.slf4j.LoggerFactory.getLogger(Manager.class);
 	private final static String[] EXPORTIMAGESUFFIXES =javax.imageio.ImageIO.getWriterFileSuffixes();
 	private final static String[] EXPORTMOVIESUFFIXES =new String[]{"avi"};
 	private de.netsysit.util.pattern.command.ChooseFileAction startRecordingAction;
@@ -130,7 +130,7 @@ public class Manager extends de.elbosso.util.beans.EventHandlingSupport implemen
 				desktopViewportSelector.setBounds(lastDesktopViewportSelectorBounds);
 			if ((oml = createMediaLocator(files[0].toURI().toURL().toString())) == null)
 			{
-				if (CLASS_LOGGER.isEnabledFor(org.apache.log4j.Level.ERROR))
+				if (CLASS_LOGGER.isErrorEnabled())
 					CLASS_LOGGER.error("Cannot build media locator from: " + files[0]);
 				System.exit(1);
 			}

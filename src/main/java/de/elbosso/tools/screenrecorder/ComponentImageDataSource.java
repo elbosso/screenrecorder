@@ -49,7 +49,7 @@ import javax.media.protocol.PullBufferStream;
  */
 class ComponentImageDataSource extends PullBufferDataSource
 {
-	private final static org.apache.log4j.Logger CLASS_LOGGER = org.apache.log4j.Logger.getLogger(ComponentImageDataSource.class);
+	private final static org.slf4j.Logger CLASS_LOGGER = org.slf4j.LoggerFactory.getLogger(ComponentImageDataSource.class);
 
 	private final AviCreator aviCreator;
 	private ComponentImageSourceStream[] streams;
